@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: convtemp
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: convtemp
+  template:
+    metadata:
+      labels:
+        app: convtemp
+    spec:
+      containers:
+        - name: convtemp
+          image: ciceribeiroo/conversao-temperatura:v2
+          ports:
+            - containerPort: 80
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: convtemp
+spec:
+  selector: 
+    app: convtemp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    nodePort: 30000
+  type: NodePort
